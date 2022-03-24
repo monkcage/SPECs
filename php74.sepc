@@ -1,0 +1,166 @@
+# http://opensource.org/license/MIT
+#
+# Please preserve changelog entries
+#
+# API/ABI check
+
+%define debug_package %{nil}
+%define _debugsource_template %{nil}
+
+# by default all features are enabled
+%global with_cli      0%{!?_without_cli:1}
+%global with_xml      0%{!?_without_xml:1}
+%global with_pgsql    0%{!?_without_pgsql:1}
+%global with_opcache  0%{!?_without_opcache:1}
+%global with_odbc     0%{!?_without_odbc:1}
+%global with_ldap     0%{!?_without_ldap:1}
+%global with_bcmath   0%{!?_without_bcmath:1}
+%global with_fpm      0%{!?_without_fpm:1}
+
+
+%global main_name           php74-php
+%global fpm_name            php-fpm
+%global php_sysconfdir      %{_sysconfdir}
+%global php_datadir         %{_datadir}/php
+%global pear_datadir        %{_datadir}/pear
+%global php_docdir          %{_docdir}
+%global test_datadir        %{_datadir}/tests
+%global fpm_config_name     php_fpm.conf
+%global fpm_config_dir      %{php_sysconfdir}/php-fpm.d
+%global bin_phar            phar
+%global bin_cli             php
+%global bin_cgi             php-cgi
+%global bin_phpize          phpize
+%global bin_phpdbg          phpdbg
+%global bin_fpm             php-fpm
+%global bin_php_config      php-config
+%global fpm_datadir         %{_datadir}/fpm
+%global php_includedir      %{_includedir}/php
+
+%global php_main            %{main_name}
+%global php_common          %{php_main}-common
+%global php_cli             %{php_main}-cli
+%global php_cgi             %{php_main}-cgi
+%global php_xml             %{php_main}-xml
+%global php_opcache         %{php_main}-opcache
+%global php_bcmath          %{php_main}-bcmath
+%global php_mysql           %{php_main}-mysql
+%global php_mysqlnd         %{php_main}-mysqlnd
+%global php_libdir          %{_libdir}/%{php_main}
+%global php_fpm_rundir      %{_rundir}/%{fpm_name}
+%global php_sharedstatedir  %{_sharedstatedir}/%{php_name}
+%global fpm_sharedstatedir  %{_sharedstatedir}/%{fpm_name}
+%global fpm_logdir          %{_localstatedir}/log/%{fpm_name}
+%global fpm_config          %{php_sysconfdir}/%{fpm_config_name}
+%global fpm_service         %{fpm_name}
+%global fpm_service_d       %{fpm_service}.service.d
+%global fpm_unit            %{fpm_service}.service
+%global fpm_logrotate       %{fpm_service}
+
+%if 0%{?fedora}
+%global mysql_config %{_bindir}/mysql_config
+%else
+%global mysql_config %{_bindir}/mysql/mysql_config
+%endif
+
+%global mysql_sock  %(mysql_config --socket 2>/dev/null || echo /var/lib/mysql/mysql.sock)
+
+
+
+Summary:      PHP scripting language for creating dynamic web sites
+Name:         %{php_main}
+Version:      7.4.28
+License:      PHP and Zend and BSD and MIT and ASL 1.0 and NCSA
+Group:        Development/Languages
+URL:          http://www.php.net/
+Source0:  http://www.php.net/distributions/php-%{version}.tar.gz
+Source1:  php.conf
+Source2:  php.ini
+Source3:  macros.php
+Source4:  php-fpm.conf
+Source5:  php-fpm-www.conf
+Source6:  php-fpm.service
+Source7:  php-fpm.logrotate
+Source8:  php.modconf
+Source9:  php-fpm.wants
+
+BuildRequires:  autoconf >= 2.64
+BuildRequires:  bison
+BuildRequires:  bzip2-devel
+BuildRequires:  libdb-devel
+BuildRequires:  flex
+BuildRequires:  freetype-devel
+BuildRequires:  gcc-c++
+BuildRequires:  gdbm-devel
+BuildRequires:  libacl-devel
+BuildRequires:  libargon2-devel
+BuildRequires:  libc-client-devel
+BuildRequires:  libcurl-devel
+BuildRequires:  libicu-devel >= 50
+BuildRequires:  libjpeg-devel
+BuildRequires:  libpng-devel
+BuildRequires:  libstdc++-devel
+BuildRequires:  libtool >= 1.4.3
+BuildRequires:  libtool-ltdl-devel
+BuildRequires:  libwebp-devel
+BuildRequires:  libxml2-devel
+BuildRequires:  libzip
+BuidlRequires:  oniguruma-devel
+BuildRequires:  openssl-devel
+BuildRequires:  pcre2-devel
+BuildRequires:  perl
+BuildRequires:  smtpdaemon
+BuildRequires:  sqlite-devel >= 3.6.0
+BuildRequires:  unixODBC-devel
+BuildRequires:  zlib-devel
+
+Requires: %{php-common}%{?_isa} = %{version}-%{release}
+Requires: libcurl
+
+%description
+PHP is an HTML-embedded scripting language.
+
+
+%package common
+Group:    Development/Languages
+Summary:  Common files for PHP
+License:  PHP and BSD and LGPLv2.0 and OpenLDAP
+
+%description common
+The php-common package contains files used by both the php
+package and the php-cli package.
+
+
+%package cli
+Group:    Development/Languages
+Summary:  Command-line interface for php
+License:  PHP and Zend and BSD and MIT and ASL 1.0 and NCSA and PostgreSQL
+Requires: %{php_common}%{?_isa} = %{version}-%{baserel}
+Provides: %{php_cli}%{?_isa} = %{version}-%{baserel}
+
+%description cli
+PHP command-line interface
+
+
+%package cgi
+Group:    Development/Languages
+Summary:  CGI interface for PHP
+Requires: %{php_common}%{?_isa} = %{version}-%{baserel}
+
+%description cgi
+CGI interface for php
+
+
+%package ioncube
+Summary:  inoCube extension for PHP
+Group:    Development/Languages
+Requires: %{php_com}
+
+
+
+
+
+
+
+
+
